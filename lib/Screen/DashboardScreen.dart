@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/Screen/detailPage.dart';
-import 'package:food_delivery/model/category.dart';
 import 'package:food_delivery/model/fooditem.dart';
 
 class Dashboard extends StatefulWidget {
@@ -9,66 +8,22 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  var selectedCard = 'All';
-  selectCard(cardTitle) {
-    setState(() {
-      selectedCard = cardTitle;
-    });
-  }
-
   int listLength = 0;
-  List<FoodItem> foodItem = [
-    /* FoodItem(
-        pid: '1',
-        pname: "Bhaji Pav",
-        desc:
-            'Street style Vegetable Hakka Noodles make a great weeknight meal!',
-        price: 150,
-        imgUrl:
-            'http://webearl.com/minto_ecommerce/product_images/product.jpg'),
-    FoodItem(
-        pid: '2',
-        pname: 'Pulav',
-        desc:
-            'Street style Vegetable Hakka Noodles make a great weeknight meal!',
-        price: 7000,
-        imgUrl:
-            'http://webearl.com/minto_ecommerce/product_images/product.jpg'),
-    FoodItem(
-        pid: '3',
-        pname: 'Manchurian',
-        desc:
-            'Street style Vegetable Hakka Noodles make a great weeknight meal!',
-        price: 25,
-        imgUrl:
-            'http://webearl.com/minto_ecommerce/product_images/product.jpg'),
-    FoodItem(
-        pid: '4',
-        pname: 'Hakka Noodles',
-        desc:
-            'Street style Vegetable Hakka Noodles make a great weeknight meal!',
-        price: 700,
-        imgUrl:
-            'http://webearl.com/minto_ecommerce/product_images/product.jpg'),*/
-  ];
+  List<FoodItem> foodItem = [];
   Future<void> getItem(catId) async {
     FooditemList instance = FooditemList();
-    await instance.getProduct(catId);
-    if (instance.isdataFound) {
-      instance.foodItems = instance.foodItems;
-      setState(() {
-        foodItem = instance.foodItems;
-        listLength = instance.getlenght();
-        print('dashboard $foodItem');
-        print('dashboard lenght $listLength');
-      });
-    }
+    instance.getProduct(catId).then((value) {
+      if (instance.isdataFound) {
+        setState(() {
+          foodItem.addAll(value);
+        });
+      }
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    //Category().getCategory();
     getItem(1);
   }
 
@@ -187,11 +142,8 @@ class _DashboardState extends State<Dashboard> {
                             onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DetailsPage(
-                                  foodName: foodItem[index].pname,
-                                  foodPrice: foodItem[index].price.toString(),
-                                  heroTag: foodItem[index].imgUrl,
-                                ),
+                                builder: (context) =>
+                                    DetailsPage(foodItem: foodItem[index]),
                               ),
                             ),
                             child: Card(
@@ -252,7 +204,8 @@ class _DashboardState extends State<Dashboard> {
                         color: Colors.black),
                   ),
                   Text(
-                    '₹' + '${foodItem[index].price}',
+                    '₹' +
+                        '${foodItem[index].price} / ${foodItem[index].itemQty}',
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

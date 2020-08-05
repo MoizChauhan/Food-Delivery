@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/model/fooditem.dart';
 
 class DetailsPage extends StatefulWidget {
-  final heroTag;
-  final foodName;
-  final foodPrice;
+  final FoodItem foodItem;
 
-  DetailsPage({this.heroTag, this.foodName, this.foodPrice});
+  DetailsPage({this.foodItem});
 
   @override
   _DetailsPageState createState() => _DetailsPageState();
@@ -63,11 +62,11 @@ class _DetailsPageState extends State<DetailsPage> {
                 top: 30.0,
                 left: (MediaQuery.of(context).size.width / 2) - 100.0,
                 child: Hero(
-                    tag: widget.heroTag,
+                    tag: widget.foodItem.imgUrl,
                     child: Container(
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: NetworkImage(widget.heroTag),
+                                image: NetworkImage(widget.foodItem.imgUrl),
                                 fit: BoxFit.cover)),
                         height: 200.0,
                         width: 200.0))),
@@ -78,7 +77,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(widget.foodName,
+                    Text(widget.foodItem.pname,
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 22.0,
@@ -87,7 +86,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(widget.foodPrice,
+                        Text(widget.foodItem.price,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 20.0,
@@ -147,20 +146,6 @@ class _DetailsPageState extends State<DetailsPage> {
                       ],
                     ),
                     SizedBox(height: 20.0),
-                    /* Container(
-                        height: 150.0,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: <Widget>[
-                            _buildInfoCard('WEIGHT', '300', 'G'),
-                            SizedBox(width: 10.0),
-                            _buildInfoCard('CALORIES', '267', 'CAL'),
-                            SizedBox(width: 10.0),
-                            _buildInfoCard('VITAMINS', 'A, B6', 'VIT'),
-                            SizedBox(width: 10.0),
-                            _buildInfoCard('AVAIL', 'NO', 'AV')
-                          ],
-                        )), */
                     SizedBox(height: 20.0),
                     Padding(
                       padding: EdgeInsets.only(bottom: 5.0),
@@ -174,7 +159,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             color: Colors.amber.shade300),
                         height: 50.0,
                         child: Center(
-                          child: Text(widget.foodPrice,
+                          child: Text(widget.foodItem.price,
                               style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'Montserrat')),
@@ -185,74 +170,5 @@ class _DetailsPageState extends State<DetailsPage> {
                 ))
           ])
         ]));
-  }
-
-  Widget _buildInfoCard(String cardTitle, String info, String unit) {
-    return InkWell(
-        onTap: () {
-          selectCard(cardTitle);
-        },
-        child: AnimatedContainer(
-            duration: Duration(milliseconds: 500),
-            curve: Curves.easeIn,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color:
-                  cardTitle == selectedCard ? Color(0xFF7A9BEE) : Colors.white,
-              border: Border.all(
-                  color: cardTitle == selectedCard
-                      ? Colors.transparent
-                      : Colors.grey.withOpacity(0.3),
-                  style: BorderStyle.solid,
-                  width: 0.75),
-            ),
-            height: 100.0,
-            width: 100.0,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0, left: 15.0),
-                    child: Text(cardTitle,
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 12.0,
-                          color: cardTitle == selectedCard
-                              ? Colors.white
-                              : Colors.grey.withOpacity(0.7),
-                        )),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15.0, bottom: 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(info,
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 14.0,
-                                color: cardTitle == selectedCard
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight: FontWeight.bold)),
-                        Text(unit,
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 12.0,
-                              color: cardTitle == selectedCard
-                                  ? Colors.white
-                                  : Colors.black,
-                            ))
-                      ],
-                    ),
-                  )
-                ])));
-  }
-
-  selectCard(cardTitle) {
-    setState(() {
-      selectedCard = cardTitle;
-    });
   }
 }

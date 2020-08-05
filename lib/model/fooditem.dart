@@ -7,9 +7,13 @@ class FoodItem {
   String pid;
   String pname;
   String desc;
-  double price;
+  String price;
   String imgUrl;
+  String itemQty;
   int quantity;
+  String deliveryTime;
+  String ratings;
+  String calories;
 
   FoodItem({
     @required this.pid,
@@ -27,6 +31,17 @@ class FoodItem {
   void decrementQuantity() {
     this.quantity = this.quantity - 1;
   }
+
+  FoodItem.fromJson(Map<String, dynamic> res) {
+    pid = res['pid'];
+    pname = res['pname'];
+    price = res['price'];
+    imgUrl = res['pphoto'];
+    desc = res['pdesc'];
+    deliveryTime = res['delivery_time'];
+    itemQty = res['pqty'];
+    calories = res['calories'];
+  }
 }
 
 class FooditemList {
@@ -37,7 +52,8 @@ class FooditemList {
     return foodItems.length;
   }
 
-  Future<void> getProduct(catId) async {
+  // ignore: missing_return
+  Future<List<FoodItem>> getProduct(catId) async {
     String url =
         'http://webearl.com/minto_ecommerce/product_display.php?cid=$catId';
     try {
@@ -50,12 +66,15 @@ class FooditemList {
         prodList = await data['server'];
         print('outside..');
         for (var res in prodList) {
-          String pid = res['pid'];
-          print(pid);
+          foodItems.add(FoodItem.fromJson(res));
         }
+        return foodItems;
+      } else {
+        isdataFound = false;
+        return foodItems;
       }
     } catch (e) {
-      isdataFound = false;
+      print(e);
     }
   }
 }
