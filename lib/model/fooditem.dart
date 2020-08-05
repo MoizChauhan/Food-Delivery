@@ -39,9 +39,9 @@ class FooditemList {
 
   Future<void> getProduct(catId) async {
     String url =
-        'http://webearl.com/minto_ecommerce/product_display.php?cid="$catId"';
+        'http://webearl.com/minto_ecommerce/product_display.php?cid=$catId';
     try {
-      Response response = await post(url);
+      Response response = await get(url);
       print('prdouct response $response');
       print('Status Code: ${response.statusCode}');
       if (response.statusCode >= 200 && response.statusCode <= 299) {
@@ -50,19 +50,8 @@ class FooditemList {
         prodList = await data['server'];
         print('outside..');
         for (var res in prodList) {
-          print('inside loop');
           String pid = res['pid'];
-          String pname = res['pname'];
-          String desc = res['pdesc'];
-          double price = res['price'];
-          String imgUrl = res['pphoto'];
-          print('$pid, $pname, $desc, $price, $imgUrl');
-          foodItems.add(FoodItem(
-              pid: pid,
-              pname: pname,
-              desc: desc,
-              price: price,
-              imgUrl: imgUrl));
+          print(pid);
         }
       }
     } catch (e) {

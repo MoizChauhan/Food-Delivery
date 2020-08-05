@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/Screen/detailPage.dart';
 import 'package:food_delivery/model/category.dart';
 import 'package:food_delivery/model/fooditem.dart';
 
@@ -15,19 +16,59 @@ class _DashboardState extends State<Dashboard> {
     });
   }
 
-  List<FoodItem> foodItem = [];
+  int listLength = 0;
+  List<FoodItem> foodItem = [
+    /* FoodItem(
+        pid: '1',
+        pname: "Bhaji Pav",
+        desc:
+            'Street style Vegetable Hakka Noodles make a great weeknight meal!',
+        price: 150,
+        imgUrl:
+            'http://webearl.com/minto_ecommerce/product_images/product.jpg'),
+    FoodItem(
+        pid: '2',
+        pname: 'Pulav',
+        desc:
+            'Street style Vegetable Hakka Noodles make a great weeknight meal!',
+        price: 7000,
+        imgUrl:
+            'http://webearl.com/minto_ecommerce/product_images/product.jpg'),
+    FoodItem(
+        pid: '3',
+        pname: 'Manchurian',
+        desc:
+            'Street style Vegetable Hakka Noodles make a great weeknight meal!',
+        price: 25,
+        imgUrl:
+            'http://webearl.com/minto_ecommerce/product_images/product.jpg'),
+    FoodItem(
+        pid: '4',
+        pname: 'Hakka Noodles',
+        desc:
+            'Street style Vegetable Hakka Noodles make a great weeknight meal!',
+        price: 700,
+        imgUrl:
+            'http://webearl.com/minto_ecommerce/product_images/product.jpg'),*/
+  ];
   Future<void> getItem(catId) async {
     FooditemList instance = FooditemList();
     await instance.getProduct(catId);
     if (instance.isdataFound) {
-      print('Data Found From Dashboard..');
+      instance.foodItems = instance.foodItems;
+      setState(() {
+        foodItem = instance.foodItems;
+        listLength = instance.getlenght();
+        print('dashboard $foodItem');
+        print('dashboard lenght $listLength');
+      });
     }
   }
 
   @override
   void initState() {
     super.initState();
-    Category().getCategory();
+    //Category().getCategory();
     getItem(1);
   }
 
@@ -135,17 +176,29 @@ class _DashboardState extends State<Dashboard> {
                   ),
                   Expanded(
                     child: GridView.builder(
-                      itemCount: 5,
+                      itemCount: foodItem.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2),
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 30, vertical: 10),
-                          child: Card(
-                            elevation: 15,
-                            shadowColor: Colors.grey,
-                            child: _buildInfoCard(),
+                          child: InkWell(
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailsPage(
+                                  foodName: foodItem[index].pname,
+                                  foodPrice: foodItem[index].price.toString(),
+                                  heroTag: foodItem[index].imgUrl,
+                                ),
+                              ),
+                            ),
+                            child: Card(
+                              elevation: 15,
+                              shadowColor: Colors.grey,
+                              child: _buildInfoCard(index),
+                            ),
                           ),
                         );
                       },
@@ -158,46 +211,7 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  // ignore: unused_element
-  Widget _customTabBar(String cardTitle) {
-    return InkWell(
-        onTap: () {
-          selectCard(cardTitle);
-        },
-        child: AnimatedContainer(
-            duration: Duration(milliseconds: 500),
-            curve: Curves.easeIn,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color:
-                  cardTitle == selectedCard ? Color(0xFF7A9BEE) : Colors.white,
-              border: Border.all(
-                  color: cardTitle == selectedCard
-                      ? Colors.transparent
-                      : Colors.grey.withOpacity(0.3),
-                  style: BorderStyle.solid,
-                  width: 0.75),
-            ),
-            height: 10.0,
-            width: 100.0,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0, left: 15.0),
-                    child: Text(cardTitle,
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          color: cardTitle == selectedCard
-                              ? Colors.white
-                              : Colors.grey.withOpacity(0.7),
-                        )),
-                  ),
-                ])));
-  }
-
-  Widget _buildInfoCard() {
+  Widget _buildInfoCard(index) {
     return InkWell(
         child: Container(
             decoration: BoxDecoration(
@@ -218,13 +232,13 @@ class _DashboardState extends State<Dashboard> {
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(
-                        'http://www.1zoom.net/big2/716/326686-svetik.jpg',
+                        foodItem[index].imgUrl,
                         fit: BoxFit.fitHeight,
                       ),
                     ),
                   ),
                   Text(
-                    'Beach BBQ Burger',
+                    foodItem[index].pname,
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -238,7 +252,7 @@ class _DashboardState extends State<Dashboard> {
                         color: Colors.black),
                   ),
                   Text(
-                    '₹' + '80.5',
+                    '₹' + '${foodItem[index].price}',
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
