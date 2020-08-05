@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/model/category.dart';
+import 'package:food_delivery/model/fooditem.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -13,17 +15,33 @@ class _DashboardState extends State<Dashboard> {
     });
   }
 
+  List<FoodItem> foodItem = [];
+  Future<void> getItem(catId) async {
+    FooditemList instance = FooditemList();
+    await instance.getProduct(catId);
+    if (instance.isdataFound) {
+      print('Data Found From Dashboard..');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Category().getCategory();
+    getItem(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: 6,
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFFFCFCFC),
         appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-              onTap: () {},
+          leading: InkWell(
+            onTap: () {},
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Container(
                 height: 65.0,
                 width: 60.0,
@@ -60,7 +78,11 @@ class _DashboardState extends State<Dashboard> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Center(
-                  child: Icon(Icons.shopping_cart, color: Colors.black),
+                  child: Icon(
+                    Icons.shopping_cart,
+                    color: Colors.amber,
+                    size: 30,
+                  ),
                 ),
               ),
             ),
@@ -72,35 +94,59 @@ class _DashboardState extends State<Dashboard> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                      height: 50.0,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: <Widget>[
-                          _customTabBar('All'),
-                          SizedBox(width: 10.0),
-                          _customTabBar('Grocery'),
-                          SizedBox(width: 10.0),
-                          _customTabBar('Vegetable'),
-                          SizedBox(width: 10.0),
-                          _customTabBar('Fruits'),
-                          SizedBox(width: 10.0),
-                          _customTabBar(''),
-                          SizedBox(width: 10.0),
-                          _customTabBar('Vegetable'),
-                          SizedBox(width: 10.0),
-                          _customTabBar('Vegetable'),
-                        ],
-                      )),
+                    height: 50.0,
+                    child: TabBar(
+                        isScrollable: true,
+                        indicatorColor: Colors.amber,
+                        labelColor: Colors.amber,
+                        unselectedLabelColor: Colors.black,
+                        tabs: [
+                          Text(
+                            'All',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17),
+                          ),
+                          Text(
+                            'Vegetables',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17),
+                          ),
+                          Text(
+                            'Grocery',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17),
+                          ),
+                          Text(
+                            'Gutka',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17),
+                          ),
+                          Text(
+                            'Fruits',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17),
+                          ),
+                          Text(
+                            'Others',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17),
+                          )
+                        ]),
+                  ),
                   Expanded(
                     child: GridView.builder(
                       itemCount: 5,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2),
                       itemBuilder: (context, index) {
-                        return Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: _buildInfoCard(),
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 10),
+                          child: Card(
+                            elevation: 15,
+                            shadowColor: Colors.grey,
+                            child: _buildInfoCard(),
+                          ),
                         );
                       },
                     ),
@@ -112,6 +158,7 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
+  // ignore: unused_element
   Widget _customTabBar(String cardTitle) {
     return InkWell(
         onTap: () {

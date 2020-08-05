@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
         title: 'Food Delivery',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          fontFamily: 'OpenSans',
-          primarySwatch: Colors.blue,
+          fontFamily: 'Montserrat',
+          primarySwatch: Colors.amber,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: Dashboard(),
