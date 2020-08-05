@@ -14,7 +14,7 @@ class FoodItem {
   String deliveryTime;
   String ratings;
   String calories;
-
+  String shopName;
   FoodItem({
     @required this.pid,
     @required this.pname,
@@ -41,6 +41,8 @@ class FoodItem {
     deliveryTime = res['delivery_time'];
     itemQty = res['pqty'];
     calories = res['calories'];
+    ratings = res['rating'];
+    shopName = res['shop_name'];
   }
 }
 
