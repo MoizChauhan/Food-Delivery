@@ -17,20 +17,20 @@ class _DetailsPageState extends State<DetailsPage> {
     return Scaffold(
       backgroundColor: Color(0xFFFCFCFC),
       appBar: AppBar(
-        /* leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(Icons.arrow_back_ios),
-            color: Colors.black,
-          ), */
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(Icons.arrow_back),
+          color: Colors.amber,
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.shopping_cart),
             onPressed: () {},
-            color: Colors.black,
+            color: Colors.amber,
           )
         ],
       ),
@@ -132,15 +132,20 @@ class _DetailsPageState extends State<DetailsPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          widget.foodItem.pname,
-                          style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold),
+                        Expanded(
+                          child: Text(
+                            widget.foodItem.pname,
+                            style: TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                        Text(
-                          '₹ ${widget.foodItem.price}/${widget.foodItem.itemQty}',
-                          style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            '₹ ${widget.foodItem.price}/${widget.foodItem.itemQty}',
+                            style: TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ],
                     ),
