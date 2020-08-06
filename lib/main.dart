@@ -1,6 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/Screen/DashboardScreen.dart';
+import 'package:food_delivery/Screen/loginscreen.dart';
 import 'package:food_delivery/bloc/cartbloc.dart';
 
 void main() {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.amber,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: Dashboard(),
+        home: LoginScreen(),
       ),
     );
   }

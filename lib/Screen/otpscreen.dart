@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_delivery/Screen/DashboardScreen.dart';
 import 'package:food_delivery/utils/my_colors.dart';
 import 'package:food_delivery/utils/my_text.dart';
 
@@ -95,11 +96,11 @@ class _OTPScreenState extends State<OTPScreen> {
                             ),
                             color: Colors.transparent,
                             onPressed: () {
-                              /* Navigator.pushReplacement(
+                              Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => DashboardScreen(),
-                                  )); */
+                                    builder: (context) => Dashboard(),
+                                  ));
                             },
                           ),
                         ),
