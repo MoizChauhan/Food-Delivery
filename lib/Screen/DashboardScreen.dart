@@ -15,6 +15,7 @@ class _DashboardState extends State<Dashboard> {
     instance.getProduct(catId).then((value) {
       if (instance.isdataFound) {
         setState(() {
+          foodItem.clear();
           foodItem.addAll(value);
         });
       }
@@ -130,36 +131,44 @@ class _DashboardState extends State<Dashboard> {
                         ]),
                   ),
                   Expanded(
-                    child: GridView.builder(
-                      itemCount: foodItem.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2),
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 10),
-                          child: InkWell(
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    DetailsPage(foodItem: foodItem[index]),
-                              ),
-                            ),
-                            child: Card(
-                              elevation: 15,
-                              shadowColor: Colors.grey,
-                              child: _buildInfoCard(index),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                      child: TabBarView(children: [
+                    buildGridView(),
+                    buildGridView(),
+                    buildGridView(),
+                    buildGridView(),
+                    buildGridView(),
+                    buildGridView()
+                  ])),
                 ]),
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildGridView() {
+    return GridView.builder(
+      itemCount: foodItem.length,
+      gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          child: InkWell(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetailsPage(foodItem: foodItem[index]),
+              ),
+            ),
+            child: Card(
+              elevation: 15,
+              shadowColor: Colors.grey,
+              child: _buildInfoCard(index),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -197,7 +206,7 @@ class _DashboardState extends State<Dashboard> {
                         color: Colors.black),
                   ),
                   Text(
-                    'Hotel Name',
+                    foodItem[index].shopName,
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -205,7 +214,7 @@ class _DashboardState extends State<Dashboard> {
                   ),
                   Text(
                     '₹' +
-                        '${foodItem[index].price} / ${foodItem[index].itemQty}',
+                        '${foodItem[index].price.toString()} / ${foodItem[index].itemQty}',
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
